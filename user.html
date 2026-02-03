@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Home | My Website</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: linear-gradient(120deg, #2563eb, #1e40af);
+  color: #111827;
+}
+
+/* HEADER */
+header {
+  background: #fff;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+}
+
+header h1 {
+  color: #2563eb;
+}
+
+nav a {
+  text-decoration: none;
+  margin-left: 20px;
+  color: #374151;
+  font-weight: 500;
+}
+
+nav a:hover {
+  color: #2563eb;
+}
+
+/* HERO */
+.hero {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.hero-box {
+  background: #fff;
+  max-width: 900px;
+  padding: 50px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.hero-box h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.hero-box p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: #4b5563;
+}
+
+.hero-box a {
+  display: inline-block;
+  padding: 14px 30px;
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.hero-box a:hover {
+  background: #1e40af;
+}
+
+/* SECTIONS */
+section {
+  padding: 60px 40px;
+  background: #f9fafb;
+}
+
+section h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2563eb;
+}
+
+/* FEATURES */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.card h3 {
+  color: #2563eb;
+}
+
+/* FOOTER */
+footer {
+  background: #111827;
+  color: #d1d5db;
+  text-align: center;
+  padding: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>MyWebsite</h1>
+  <nav>
+    <a href="user.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="birarenze.html">Services</a>
+    <a href="contact">Contact</a>
+  </nav>
+  
+</header>
+
+
+
+<!-- HOME -->
+<section class="hero" id="home">
+  
+  <div class="hero-box">
+    <h2>Welcome Yves System</h2>
+    <p>This is the user homepage after registration or login.</p>
+    <img src="b.jpg" width="800" height="1000">
+    <a href="services">Get Started</a>
+     
+    <a href="chat.html">Chat other friends</a>
+    <a href="register.html">as user create account</a>
+   
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2>About Us</h2>
+  <p style="text-align:center; max-width:700px; margin:auto;">
+    We provide a modern, secure, and fast system designed to help users manage
+    their activities efficiently.
+  </p>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <h2>Our Services</h2>
+  <section class="hero" id="home">
+  
+  <div class="hero-box">
+     <img src="a.jpg" width="800" height="1000">
+   
+  </div>
+</section>
+  <div class="features">
+    <div class="card">
+      <h3>Fast</h3>
+      <p>Your data is protected at all times..</p>
+    </div>
+    <div class="card">
+      <h3>Secure</h3>
+      <p>if work don't touch my dear friends</p>
+      
+    </div>
+    <div class="card">
+      <h3>Responsive</h3>
+      <p>Works on mobile, tablet, and desktop.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2>Contact Us</h2>
+  <p style="text-align:center;">
+    Email: yvesniyiragira5@gmail.com<br>
+    Phone: +250 794907121
+  </p>
+</section>
+
+<footer>
+  <p>&copy; 2026 MyWebsite. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
