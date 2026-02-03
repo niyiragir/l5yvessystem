@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<style>
+body {
+  font-family:'Montserrat', sans-serif;
+  margin:0;
+  /* FULL BACKGROUND IMAGE */
+  background: url('https://images.unsplash.com/photo-1593642532454-ea0a9c60d58b?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
+header {
+  background: rgba(0,0,0,0.6); /* semi-transparent header */
+  text-align:center;
+  padding:20px;
+  font-size:22px;
+  font-weight:bold;
+}
+.container {
+  max-width:900px;
+  margin:30px auto;
+  background: rgba(0,0,0,0.6); /* semi-transparent container */
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+table {
+  width:100%;
+  border-collapse: collapse;
+  margin-top:20px;
+  color:white;
+}
+th, td {
+  border:1px solid rgba(255,255,255,0.5);
+  padding:10px;
+  text-align:center;
+}
+th {
+  background: rgba(255,112,67,0.8);
+}
+button {
+  padding:5px 10px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  color:white;
+  font-weight:bold;
+}
+.edit { background:#42a5f5; }
+.delete { background:#e53935; }
+.create { background:#66bb6a; margin-top:10px; }
+.admin-img {
+  display:block;
+  margin: 0 auto 20px auto;
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:3px solid white;
+  object-fit:cover;
+}
+</style>
+</head>
+<body>
+<header>Admin Dashboard</header>
+<div class="container">
+  <h2>Admin Broadcast Chat</h2>
+  <div id="messages" class="messages"></div>
+  <div class="input">
+    <input type="text" id="adminMsg" placeholder="Type message to all users...">
+    <button onclick="sendAdminMessage()">Send</button>
+  </div>
+</div>
+<div class="container">
+  <!-- Admin profile image -->
+  <img src="v.jpg" alt="Admin" class="admin-img">
+
+  <button class="create" id="addUserBtn">Add User</button>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="userTable"></tbody>
+  </table>
+</div>
+
+<script>
+const userTable = document.getElementById("userTable");
+async function loadUsers(){
+  const res = await fetch("/admin/users");
+  const users = await res.json();
+  userTable.innerHTML="";
+  users.forEach(u=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${u.id}</td>
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td>${u.role}</td>
+      <td>
+        <button class="edit" onclick="editUser(${u.id})">Edit</button>
+        <button class="delete" onclick="deleteUser(${u.id})">Delete</button>
+      </td>
+    `;
+    userTable.appendChild(tr);
+  });
+}
+loadUsers();
+
+function editUser(id){
+  const newName = prompt("Enter new name:");
+  if(!newName) return;
+  fetch("/admin/update",{
+    method:"PUT",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ id, field:"name", value:newName })
+  }).then(()=>loadUsers());
+}
+
+function deleteUser(id){
+  if(!confirm("Delete user?")) return;
+  fetch(`/admin/delete/${id}`, { method:"DELETE" }).then(()=>loadUsers());
+}
+
+document.getElementById("addUserBtn").addEventListener("click", ()=>{
+  const name = prompt("Name:");
+  const email = prompt("Email:");
+  const password = prompt("Password:");
+  const role = prompt("Role (user/admin):");
+  if(!name||!email||!password||!role) return alert("All fields required");
+  fetch("/admin/create",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ name,email,password,role })
+  }).then(()=>loadUsers());
+});
+
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+const myId = 1; // admin fixed
+
+socket.emit("join", myId);
+
+fetch("/messages")
+.then(res=>res.json())
+.then(data=>{
+  const box=document.getElementById("messages");
+  data.forEach(m=>{
+    const div=document.createElement("div");
+    div.textContent=(m.sender_id===1?"Admin":"User")+": "+m.message;
+    box.appendChild(div);
+  });
+});
+
+function sendAdminMessage(){
+  const input=document.getElementById("adminMsg");
+  const message=input.value.trim();
+  if(!message) return;
+  fetch("/send-message",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sender_id:myId,message})});
+  input.value="";
+}
+
+socket.on("receive_message", data=>{
+  const box=document.getElementById("messages");
+  const div=document.createElement("div");
+  div.textContent=(data.sender_id===1?"Admin":"User")+": "+data.message;
+  box.appendChild(div);
+});
+</script>
+</body>
+</html>
